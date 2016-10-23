@@ -1,12 +1,17 @@
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 
-from .models import Recipe, Dish, DishCollection
+from django.contrib.auth.models import User
+from .models import Recipe, Dish, DishCollection, Cook
+from .forms import UserForm
 
 import json
 
 def index(request):
-    return HttpResponse("This is where the cookbook index will one day be!")
+  collections = DishCollection.objects.all()
+  no_users = len(Cook.objects.all())
+
+  return render(request, 'core/index.html', { 'collections': collections, 'users': no_users })
 
 
 def dish(request, id):
@@ -44,3 +49,26 @@ def recipe(request, id):
       'instructions': instructions, 
       'ingredients': ingredients
     })
+
+
+def register(request):
+  if request.method == 'POST':
+    print(request.POST)
+
+    form = UserForm(request.POST)
+    if form.is_valid():
+      print(form.cleaned_data)
+
+      user = User.objects.create_user(form.cleaned_data['username'], form.cleaned_data['email'], form.cleaned_data['password'])
+      cook = Cook.objects.create(user=user)
+
+      return render(request, 'core/register.html', { 'error_message': 'SUCCESS!', 'form': UserForm() })
+
+    else:
+      return render(request, 'core/register.html', { 'error_message': 'Form is invalid!' })
+  else:
+    return render(request, 'core/register.html', { 'form': UserForm() })
+
+
+def login(request):
+  pass

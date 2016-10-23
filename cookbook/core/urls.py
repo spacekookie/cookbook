@@ -7,4 +7,7 @@ urlpatterns = [
     url(r'^recipe/(?P<id>[0-9]+)/$', views.recipe, name='recipe'),
     url(r'^dish/(?P<id>[0-9]+)/$', views.dish, name='dish'),
     url(r'^collection/(?P<id>[0-9]+)/$', views.collection, name='collection'),
+
+    url(r'^register/$', views.register, name='register'),
+    url(r'^login/$', views.login, name='login'),
 ]

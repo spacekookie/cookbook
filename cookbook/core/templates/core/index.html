@@ -1,0 +1,14 @@
+<h1>Cookbook</h1>
+
+<p>Welcome to the modern cooking website for citizens of the 21st century!</p>
+
+<p>There are currently {{ users }} users registered on this platform. <a href="{% url 'core:register' %}">Join now</a>!</p>
+
+<p>Already registered? <a href="{% url 'core:login' %}">Sign in</a></p>
+
+<h2>Popular meal types</h2>
+<ul>
+{% for col in collections %}
+	<li><a href="{% url 'core:collection' col.id %}">{{ col.name }}</a></li>
+{% endfor %}
+</ul>
