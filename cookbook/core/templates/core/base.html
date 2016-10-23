@@ -1,0 +1,29 @@
+<head>
+
+  {% load staticfiles %}
+
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/bootstrap-theme.min.css' %}">
+
+  <link rel="stylesheet" href="{% static 'css/cookbook.css' %}">
+</head>
+
+<nav class="navbar navbar-custom navbar-static-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+    <a class="navbar-brand" href="{% url 'core:index' %}"> Cookbook</a>
+    </div>
+
+    <ul class="nav navbar-nav">
+      <li><a class="navbar-custom" href="">Collections</a></li>
+      <li><a class="navbar-custom" href="">Ingredients</a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li>{% if logged_in %} <a class="navbar-custom" href="{% url 'core:profile' current_user.id %}">{{ current_user.username }}</a>
+      {% else %}        <a class="navbar-custom" href="{% url 'core:login' %}">Login</a>{% endif %}
+      </li>
+
+      {% if logged_in %} <li><a class="navbar-custom" href="{% url 'core:logout' %}">Logout</a></li>{% endif %}
+    </ul>
+  </div>
+</nav>

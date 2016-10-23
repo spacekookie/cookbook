@@ -1,3 +1,5 @@
+{% include 'core/base.html' %}
+
 <h1><a href="{% url 'core:collection' dish.collection.id %}">{{ dish.collection.name }}</a> > {{ dish.name }}</h1>
 
 <p> {{ dish.description }} </p>

@@ -1,3 +1,5 @@
+{% include 'core/base.html' %}
+
 <h1><a href="{% url 'core:dish' recipe.dish.id %}">{{ recipe.dish.name }}</a> > {{ recipe.name }}</h1>
 
 <p> {{ recipe.dish.description }} </p>

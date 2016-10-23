@@ -1,42 +1,58 @@
 
 # Django requirements
 from django.shortcuts import get_object_or_404, render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.core.urlresolvers import reverse
 
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
+
+from django.contrib.auth import login as django_login
+from django.contrib.auth import logout as django_logout
 
 # App specific django code
 from .models import Recipe, Dish, DishCollection, Cook
 from .forms import UserForm, LoginForm
 
 # External requirements
+from datetime import datetime as dt
 import json
 
 
 def index(request):
+  current_user = request.user
   collections = DishCollection.objects.all()
   no_users = len(Cook.objects.all())
 
-  return render(request, 'core/index.html', { 'collections': collections, 'users': no_users })
+  dic = { 'logged_in': request.user.is_authenticated(), 'current_user': current_user, 'collections': collections, 'users': no_users }
+  print(dic)
+  return render(request, 'core/index.html', dic)
 
 
 def dish(request, id):
+  current_user = request.user
   dish = get_object_or_404(Dish, pk=id)
 
   implementations = dish.recipies.all()
   print(implementations)
 
-  return render(request, 'core/dish.html', { 'dish': dish, 'recipies': implementations })
+  return render(request, 'core/data_views/dish.html', 
+    { 
+      'logged_in': request.user.is_authenticated(),
+      'current_user': current_user,
+      'dish': dish,
+      'recipies': implementations
+    })
 
 
 def collection(request, id):
+  current_user = request.user
   collection = get_object_or_404(DishCollection, pk=id)
 
   dishes = collection.dishes.all()
   print(dishes)
 
-  return render(request, 'core/collection.html', 
+  return render(request, 'core/data_views/collection.html', 
     { 
       'collection': collection,
       'dishes': dishes
@@ -45,12 +61,13 @@ def collection(request, id):
 
 
 def recipe(request, id):
+  current_user = request.user
   recipe = get_object_or_404(Recipe, pk=id)
 
   instructions = json.loads(recipe.instructions)
   ingredients = recipe.ingredients.all()
 
-  return render(request, 'core/recipe.html', 
+  return render(request, 'core/data_views/recipe.html', 
     { 
       'recipe': recipe, 
       'instructions': instructions, 
@@ -59,6 +76,7 @@ def recipe(request, id):
 
 
 def register(request):
+  current_user = request.user
   template = 'core/register/register.html'
   error = 'Form data not valid!'
 
@@ -86,13 +104,14 @@ def register(request):
     print(form.errors)
 
     # In case we didn't return with a re-direct, we need to return an error message here
-    return render(request, template, { 'error_message': error, 'form': form })
+    return render(request, template, { 'logged_in': request.user.is_authenticated(), 'current_user': current_user, 'error_message': error, 'form': form })
 
   else:
-    return render(request, template, { 'form': UserForm() })
+    return render(request, template, { 'logged_in': request.user.is_authenticated(), 'current_user': current_user, 'form': UserForm() })
 
 
 def register_confirm(request, id):
+  current_user = request.user
   username = None
   
   try:
@@ -103,10 +122,11 @@ def register_confirm(request, id):
     print(e)
 
   # Return a view for a newly registered user (or not)
-  return render(request, 'core/register/confirm.html', { 'user_id': id, 'username': username })
+  return render(request, 'core/register/confirm.html', { 'logged_in': request.user.is_authenticated(), 'current_user': current_user, 'user_id': id, 'username': username })
 
 
 def login(request):
+  current_user = request.user
   template = 'core/login.html'
 
   if request.method == 'POST':
@@ -119,14 +139,31 @@ def login(request):
       user = authenticate(username=username, password=password)
 
       if user is not None:
+        django_login(request, user=user)
         print("Authentication successful!")
-        # A backend authenticated the credentials
+
+        return redirect(reverse('core:index'))
         
       else:
         print("Authentication FAILED!")
-        # No backend authenticated the credentials
-
-      return render(request, template, { 'form': LoginForm() })
+        return render(request, template, { 'logged_in': request.user.is_authenticated(), 'current_user': current_user, 'form': LoginForm() })
 
   else:
-    return render(request, template, { 'form': LoginForm() })
+    return render(request, template, { 'logged_in': request.user.is_authenticated(), 'current_user': current_user, 'form': LoginForm() })
+
+
+def profile(request, id):
+  current_user = request.user
+  return render(request, 'core/internal/profile.html', { 'logged_in': request.user.is_authenticated(), 'current_user': current_user })
+
+
+def profile_edit(request, id):
+  current_user = request.user
+  return render(request, 'core/internal/profile.html', { 'logged_in': request.user.is_authenticated(), 'current_user': current_user })
+
+
+def logout(request):
+  current_user = request.user
+  if current_user.username is not None:
+    django_logout(request)
+    return redirect(reverse('core:index'))
