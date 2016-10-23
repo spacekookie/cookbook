@@ -5,10 +5,31 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 
 
+class Picture(models.Model):
+  """
+  A simple wrapper class around a picture that can be included
+  in different models to make the site look nicer. Also has a caption
+  so that people give them a description.
+
+  Metadata class
+  """
+  img = models.ImageField(null=True, blank=True)
+  caption = models.CharField(max_length=666)
+
+  def __str__(self):
+    return self.caption
+
+  class Meta:
+    verbose_name_plural = "Pictures"
+
+
 class Cook(models.Model):
   """ A wrapper around the Django user """
   user = models.OneToOneField(User, on_delete=models.CASCADE)
-  
+  birthday = models.DateField('birthday', null=True, blank=True)
+  biography = models.TextField(null=True, blank=True)
+  avatar = models.OneToOneField(Picture, null=True, blank=True)
+
   class Meta:
     verbose_name_plural = "Cooks"
 
@@ -84,6 +105,7 @@ class Ingredient(models.Model):
 
   name = models.CharField(max_length=100)
   description = models.TextField()
+  images = models.ForeignKey(Picture, null=True, blank=True)
   
   # TODO: Add image
   # TODO: Add wikipedia information
@@ -104,6 +126,7 @@ class Recipe(models.Model):
   dish = models.ForeignKey(Dish, related_name="recipies")
   
   name = models.CharField(max_length=100)
+  images = models.ForeignKey(Picture, null=True, blank=True)
 
   pub_date = models.DateTimeField('date published')
   edit_date = models.DateTimeField('date edited')

@@ -9,5 +9,6 @@ urlpatterns = [
     url(r'^collection/(?P<id>[0-9]+)/$', views.collection, name='collection'),
 
     url(r'^register/$', views.register, name='register'),
+    url(r'^register/(?P<id>[0-9]+)/$', views.register_confirm, name='register_confirm'),
     url(r'^login/$', views.login, name='login'),
 ]

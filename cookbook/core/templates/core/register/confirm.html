@@ -1,0 +1,19 @@
+{% if username %}
+
+<h1>Happy to see you join Cookbook!</h1>
+
+<p>Welcome to our community <b>{{ username }}</b>. You are user number {{ user_id }}</p> <br />
+
+<h3><a href="{% url 'core:login' %}">Sign in</a></h3>
+
+{% else %}
+
+<h1>This is odd...</h1>
+
+<p>Huh...the user ID you provided doesn't seem to be registered. Are you sure everything went alright during your sign-up?</b>
+
+<br />
+<p>You can always try to <a href="{% url 'core:register' %}">register again?</a></p>
+
+{% endif %}
+

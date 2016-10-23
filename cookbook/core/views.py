@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse
 
 from django.contrib.auth.models import User
@@ -6,6 +6,7 @@ from .models import Recipe, Dish, DishCollection, Cook
 from .forms import UserForm
 
 import json
+
 
 def index(request):
   collections = DishCollection.objects.all()
@@ -52,23 +53,53 @@ def recipe(request, id):
 
 
 def register(request):
+  template = 'core/register/register.html'
+  error = 'Form data not valid!'
+
   if request.method == 'POST':
     print(request.POST)
 
+    print("Checking if the form is valid...")
     form = UserForm(request.POST)
+
     if form.is_valid():
-      print(form.cleaned_data)
+      print("Yay! Form is valid: %s" % form.cleaned_data)
 
-      user = User.objects.create_user(form.cleaned_data['username'], form.cleaned_data['email'], form.cleaned_data['password'])
-      cook = Cook.objects.create(user=user)
+      try:
+        print("Creating user with username: %s" % form.cleaned_data['username'])
+        user = User.objects.create_user(form.cleaned_data['username'], form.cleaned_data['email'], form.cleaned_data['password'])
 
-      return render(request, 'core/register.html', { 'error_message': 'SUCCESS!', 'form': UserForm() })
+        print("Creating new cook with attached FOOBAR!")
+        cook = Cook.objects.create(user=user)
 
-    else:
-      return render(request, 'core/register.html', { 'error_message': 'Form is invalid!' })
+        # Redirect to a confirm page for the registration
+        return HttpResponseRedirect(reverse('core:register_confirm', args=(user.id,)))
+
+      except Exception as e:
+        print(e.message)
+        error = "User registration failed because: '%s'" % e.message
+
+    print(form.errors)
+
+    # In case we didn't return with a re-direct, we need to return an error message here
+    return render(request, template, { 'error_message': error, 'form': form })
+
   else:
-    return render(request, 'core/register.html', { 'form': UserForm() })
+    return render(request, template, { 'form': UserForm() })
 
+
+def register_confirm(request, id):
+  username = None
+  
+  try:
+    user = User.objects.get(pk=id)
+    username = user.username
+
+  except Exception as e:
+    print(e)
+
+  # Return a view for a newly registered user (or not)
+  return render(request, 'core/register/confirm.html', { 'user_id': id, 'username': username })
 
 def login(request):
   pass
