@@ -10,3 +10,8 @@ class UserForm(forms.Form):
   real_surname = forms.CharField(required=False)
   birthday = forms.DateField(required=False)
   avatar = forms.FileField(required=False)
+
+
+class LoginForm(forms.Form):
+  username = forms.CharField(required=True)
+  password = forms.CharField(required=True)

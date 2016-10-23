@@ -1,0 +1,15 @@
+<h1>Login</h1>
+
+<p>You can log into your account with your <b>username</b></p>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'core:login' %}" method="post">
+{% csrf_token %}
+
+  <label><b>Username: </b></label>    <input type="text" name="username" id="username" /><br />
+  <label><b>Password: </b></label>    <input type="password" name="password" id="password" /><br />
+ 
+  <br />
+  <input type="submit" value="Login" />
+</form>

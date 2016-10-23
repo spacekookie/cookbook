@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import Cook, Category, DishCollection, Dish, Ingredient, Recipe, Picture
 
+
 admin.site.register(Picture)
 admin.site.register(Cook)
 admin.site.register(Category)

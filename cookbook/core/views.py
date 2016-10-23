@@ -1,10 +1,16 @@
+
+# Django requirements
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse
 
 from django.contrib.auth.models import User
-from .models import Recipe, Dish, DishCollection, Cook
-from .forms import UserForm
+from django.contrib.auth import authenticate
 
+# App specific django code
+from .models import Recipe, Dish, DishCollection, Cook
+from .forms import UserForm, LoginForm
+
+# External requirements
 import json
 
 
@@ -57,13 +63,11 @@ def register(request):
   error = 'Form data not valid!'
 
   if request.method == 'POST':
-    print(request.POST)
 
     print("Checking if the form is valid...")
     form = UserForm(request.POST)
 
     if form.is_valid():
-      print("Yay! Form is valid: %s" % form.cleaned_data)
 
       try:
         print("Creating user with username: %s" % form.cleaned_data['username'])
@@ -101,5 +105,28 @@ def register_confirm(request, id):
   # Return a view for a newly registered user (or not)
   return render(request, 'core/register/confirm.html', { 'user_id': id, 'username': username })
 
+
 def login(request):
-  pass
+  template = 'core/login.html'
+
+  if request.method == 'POST':
+    form = LoginForm(request.POST)
+
+    if form.is_valid():
+      username = form.cleaned_data['username']
+      password = form.cleaned_data['password']
+
+      user = authenticate(username=username, password=password)
+
+      if user is not None:
+        print("Authentication successful!")
+        # A backend authenticated the credentials
+        
+      else:
+        print("Authentication FAILED!")
+        # No backend authenticated the credentials
+
+      return render(request, template, { 'form': LoginForm() })
+
+  else:
+    return render(request, template, { 'form': LoginForm() })
