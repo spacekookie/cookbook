@@ -1,4 +1,4 @@
-<h1>{{ recipe.dish.name }} > {{ recipe.name }}</h1>
+<h1><a href="{% url 'core:dish' recipe.dish.id %}">{{ recipe.dish.name }}</a> > {{ recipe.name }}</h1>
 
 <p> {{ recipe.dish.description }} </p>
 

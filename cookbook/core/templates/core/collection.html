@@ -1,0 +1,10 @@
+<h1>{{ collection.name }}</h1>
+
+<p> {{ collection.description }} </p>
+
+<h2>Popular Dishes</h2>
+<ul>
+{% for dish in dishes %}
+	<li><a href="{% url 'core:dish' dish.id %}">{{ dish.name }}</a></li>
+{% endfor %}
+</ul>

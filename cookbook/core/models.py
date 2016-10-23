@@ -77,7 +77,7 @@ class Dish(models.Model):
 
 class Ingredient(models.Model):
   """
-  An ingredient is tagged in recipes and searchable. It is part of the
+  An ingredient is tagged in recipies and searchable. It is part of the
   creation process of a meal. It contains data for people to look up
   during cooking or while doing research into new dishes
   """
@@ -101,7 +101,7 @@ class Recipe(models.Model):
   """
 
   creator = models.ForeignKey(Cook)
-  dish = models.ForeignKey(Dish, related_name="recipes")
+  dish = models.ForeignKey(Dish, related_name="recipies")
   
   name = models.CharField(max_length=100)
 
