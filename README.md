@@ -13,3 +13,10 @@ $> python manage.py runserver
 Following is a rough structure of how cookbook organises recipies.
 
 ![Cookbook Structure](extra/cookbook_structure.png)
+
+
+## Some screenshots from an early state website
+
+![Cookbook User List](extra/user_list.png)
+
+![Cookbook ](extra/recipe_render.png)
