@@ -13,18 +13,18 @@
     background-color:black;
 }
 .navbar-custom .navbar-brand {
-    color:#bc74fc !important;
+    color:#cd96ff !important;
     font-size: 28pt;
 }
 
 .navbar-brand a:hover {
-  background-color: #bc74fc !important;
+  background-color: #cd96ff !important;
 }
 
 /* This changes the hover colour for nav items */
 ul.nav a:hover {
   color: #000 !important;
-  background-color: #bc74fc !important;
+  background-color: #cd96ff !important;
 }
 
 .navbar-custom {

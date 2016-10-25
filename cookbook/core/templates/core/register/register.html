@@ -1,5 +1,6 @@
-{% include 'core/base.html' %}
+{% extends 'core/base.html' %}
 
+{% block content %}
 <h1>User registration</h1>
 
 <p>It's great that you want to register to cookbook. We will need a little bit of data for you to join our community.</p>
@@ -24,3 +25,5 @@
   <br />
   <input type="submit" value="Register" />
 </form>
+
+{% endblock %}

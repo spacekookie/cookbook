@@ -1,12 +1,16 @@
-{% include 'core/base.html' %}
+{% extends 'core/base.html' %}
 
-<h1><a href="{% url 'core:collection' dish.collection.id %}">{{ dish.collection.name }}</a> > {{ dish.name }}</h1>
+{% block content %}
 
-<p> {{ dish.description }} </p>
+  <h1><a href="{% url 'core:collection' dish.collection.id %}">{{ dish.collection.name }}</a> > {{ dish.name }}</h1>
 
-<h2>Popular Implementations</h2>
-<ul>
-{% for rec in recipies %}
-	<li><a href="{% url 'core:recipe' rec.id %}">{{ rec.name }}</a></li>
-{% endfor %}
-</ul>
+  <p> {{ dish.description }} </p>
+
+  <h2>Popular Implementations</h2>
+  <ul>
+  {% for rec in recipies %}
+    <li><a href="{% url 'core:recipe' rec.id %}">{{ rec.name }}</a></li>
+  {% endfor %}
+  </ul>
+
+{% endblock %}

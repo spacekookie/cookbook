@@ -24,9 +24,13 @@ def index(request):
   collections = DishCollection.objects.all()
   no_users = len(Cook.objects.all())
 
-  dic = { 'logged_in': request.user.is_authenticated(), 'current_user': current_user, 'collections': collections, 'users': no_users }
-  print(dic)
-  return render(request, 'core/index.html', dic)
+  return render(request, 'core/index.html', 
+    { 
+      'logged_in': request.user.is_authenticated(),
+      'current_user': current_user,
+      'collections': collections,
+      'users': no_users
+    })
 
 
 def dish(request, id):
@@ -104,10 +108,20 @@ def register(request):
     print(form.errors)
 
     # In case we didn't return with a re-direct, we need to return an error message here
-    return render(request, template, { 'logged_in': request.user.is_authenticated(), 'current_user': current_user, 'error_message': error, 'form': form })
+    return render(request, template, 
+      { 
+        'logged_in': request.user.is_authenticated(),
+        'current_user': current_user,
+        'error_message': error, 'form': form
+      })
 
   else:
-    return render(request, template, { 'logged_in': request.user.is_authenticated(), 'current_user': current_user, 'form': UserForm() })
+    return render(request, template, 
+      { 
+        'logged_in': request.user.is_authenticated(),
+        'current_user': current_user,
+        'form': UserForm()
+      })
 
 
 def register_confirm(request, id):
@@ -122,7 +136,12 @@ def register_confirm(request, id):
     print(e)
 
   # Return a view for a newly registered user (or not)
-  return render(request, 'core/register/confirm.html', { 'logged_in': request.user.is_authenticated(), 'current_user': current_user, 'user_id': id, 'username': username })
+  return render(request, 'core/register/confirm.html', 
+    { 
+      'logged_in': request.user.is_authenticated(),
+      'current_user': current_user,
+      'user_id': id, 'username': username
+    })
 
 
 def login(request):
@@ -146,20 +165,60 @@ def login(request):
         
       else:
         print("Authentication FAILED!")
-        return render(request, template, { 'logged_in': request.user.is_authenticated(), 'current_user': current_user, 'form': LoginForm() })
+        return render(request, template, 
+          { 
+            'logged_in': request.user.is_authenticated(),
+            'current_user': current_user,
+            'form': LoginForm()
+          })
 
   else:
-    return render(request, template, { 'logged_in': request.user.is_authenticated(), 'current_user': current_user, 'form': LoginForm() })
+    return render(request, template, 
+      { 
+        'logged_in': request.user.is_authenticated(),
+        'current_user': current_user,
+        'form': LoginForm()
+      })
 
 
 def profile(request, id):
   current_user = request.user
-  return render(request, 'core/internal/profile.html', { 'logged_in': request.user.is_authenticated(), 'current_user': current_user })
+
+  user = get_object_or_404(User, pk=id)
+  recipies = []
+
+  try:
+    recipies = Recipe.objects.filter(creator=user.cook)
+
+  except Exception as e:
+    print("Apparently an error occured")
+
+  print(recipies)
+
+  return render(request, 'core/internal/profile.html', 
+    { 
+      'logged_in': request.user.is_authenticated(),
+      'current_user': current_user,
+      'user': user,
+      'recipies': recipies
+   })
 
 
 def profile_edit(request, id):
   current_user = request.user
-  return render(request, 'core/internal/profile.html', { 'logged_in': request.user.is_authenticated(), 'current_user': current_user })
+  user = get_object_or_404(User, pk=id)
+  error = None
+
+  if user is not current_user:
+    error = "Unable to edit user that is not self!"
+
+  return render(request, 'core/internal/profile.html', 
+    {
+      'error': error,
+      'logged_in': request.user.is_authenticated(),
+      'current_user': current_user,
+      'user': user
+   })
 
 
 def logout(request):

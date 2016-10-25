@@ -1,29 +1,55 @@
-<head>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load staticfiles %}
 
-  {% load staticfiles %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-  <link rel="stylesheet" href="{% static 'css/bootstrap-theme.min.css' %}">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Cookbook</title>
 
-  <link rel="stylesheet" href="{% static 'css/cookbook.css' %}">
-</head>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/cookbook.css' %}">
 
-<nav class="navbar navbar-custom navbar-static-top">
-  <div class="container-fluid">
-    <div class="navbar-header">
-    <a class="navbar-brand" href="{% url 'core:index' %}"> Cookbook</a>
-    </div>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
 
-    <ul class="nav navbar-nav">
-      <li><a class="navbar-custom" href="">Collections</a></li>
-      <li><a class="navbar-custom" href="">Ingredients</a></li>
-    </ul>
-    <ul class="nav navbar-nav navbar-right">
-      <li>{% if logged_in %} <a class="navbar-custom" href="{% url 'core:profile' current_user.id %}">{{ current_user.username }}</a>
-      {% else %}        <a class="navbar-custom" href="{% url 'core:login' %}">Login</a>{% endif %}
-      </li>
+  <body>
+  
+    <nav class="navbar navbar-custom navbar-static-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+        <a class="navbar-brand" href="{% url 'core:index' %}"> Cookbook</a>
+        </div>
 
-      {% if logged_in %} <li><a class="navbar-custom" href="{% url 'core:logout' %}">Logout</a></li>{% endif %}
-    </ul>
-  </div>
-</nav>
+        <ul class="nav navbar-nav">
+          <li><a class="navbar-custom" href="">Collections</a></li>
+          <li><a class="navbar-custom" href="">Ingredients</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li>{% if logged_in %} <a class="navbar-custom" href="{% url 'core:profile' current_user.id %}">{{ current_user.username }}</a>
+          {% else %}        <a class="navbar-custom" href="{% url 'core:login' %}">Login</a>{% endif %}
+          </li>
+
+          {% if logged_in %} <li><a class="navbar-custom" href="{% url 'core:logout' %}">Logout</a></li>{% endif %}
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container">
+      {% block content %}
+      {% endblock %}
+    </div>  
+
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  </body>
+</html>

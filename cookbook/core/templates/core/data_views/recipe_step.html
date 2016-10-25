@@ -7,7 +7,7 @@
 {% if element.children %} </b><ol>
   {% for child in element.children %}
     {% with element=child %}
-      {% include "core/recipe_step.html" %}
+      {% include "core/data_views/recipe_step.html" %}
     {% endwith %}
   {% endfor %}
 </ol> {% endif %} </li>

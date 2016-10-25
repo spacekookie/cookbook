@@ -1,3 +1,81 @@
-{% include 'core/base.html' %}
+{% extends 'core/base.html' %}
+{% load staticfiles %}
 
-<h2>{{ username }}</h2>
+
+{% block content %}
+
+<ul class="breadcrumb">
+  <li><a href="#">Home</a></li>
+  <li><a href="#">Library</a></li>
+  <li class="active">Data</li>
+</ul>
+
+{% if user.id == current_user.id %}
+<div class="alert alert-info">
+  You seem to be logged in as <strong>{{ user.username }}</strong>. You can edit this profile <span style="display:inline-block; width: 10px;"></span> <a class="btn btn-primary btn-xs" href="{% url 'core:profile_edit' current_user.id %}">Edit profile</a>
+</div>
+{% endif %}
+
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-4">
+
+          <div class="well">
+            {% if user.cook.avatar.img %}
+            <img class="img-responsive" src="{% static user.cook.avatar.img %}" />
+            {% else %}
+            <img class="img-responsive" src="{% static 'img/default_user_female.png' %}" />
+            {% endif %}
+          </div> <!-- /.well -->
+        </div> <!-- Avatar column -->
+
+        <div class="col-md-8">
+
+          <h1>{{ user.username }}</h1>
+
+          <table class="table table-striped">
+            <tbody>
+              {% if user.first_name or user.last_name %}
+              <tr>
+                <td><b>Real Name</b></td>
+                <td>{{user.first_name}} {{user.last_name}}</td>
+              </tr>
+              {% endif %}
+
+              <tr>
+                <td><b>Date joined</b></td>
+                <td>{{ user.date_joined }}</td>
+              </tr>
+              <tr>
+                <td><b>Last active</b></td>
+                <td>{{ user.last_login }}</td>
+              </tr>
+
+              <tr>
+                <td><b>Birthday</b></td>
+                <td>{{user.cook.birthday}}</td>
+              </tr>
+
+              <tr>
+                <td><b>Biography</b></td>
+                <td>{{ user.cook.biography }}</td>
+              </tr>
+
+            </tbody>
+          </table>
+
+          <h3>Recipes by this user</h3>
+          <ul>
+          {% for r in recipies %}
+            <li><a href="{% url 'core:recipe' r.id %}">{{ r.dish }} - {{ r.name }}</a></li>
+          {% endfor %}
+          </ul>
+
+        </div> <!-- Data column -->
+      </div> <!-- Row -->
+    </div> <!-- Panel body -->
+  </div> <!-- Panel -->
+
+{% endblock %}
+

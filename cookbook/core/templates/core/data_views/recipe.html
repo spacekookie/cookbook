@@ -1,4 +1,6 @@
-{% include 'core/base.html' %}
+{% extends 'core/base.html' %}
+
+{% block content %}
 
 <h1><a href="{% url 'core:dish' recipe.dish.id %}">{{ recipe.dish.name }}</a> > {{ recipe.name }}</h1>
 
@@ -6,7 +8,7 @@
 
 <h2>Some basic data</h2>
 
-<p>Creator: {{ recipe.creator }}</p>
+<p>Creator: <a href="{% url 'core:profile' recipe.creator.user.id %}">{{ recipe.creator }}</a></p>
 <p>Published: {{ recipe.pub_date }}</p>
 <p>Last edit: {{ recipe.edit_date }}</p>
 
@@ -20,6 +22,8 @@
 <h2>Instructions</h2>
 <ol>
   {% for element in instructions %}
-    {% include "core/recipe_step.html" %}
+    {% include "core/data_views/recipe_step.html" %}
   {% endfor %}
 </ol>
+
+{% endblock %}

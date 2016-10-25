@@ -1,14 +1,21 @@
-{% include 'core/base.html' %}
+{% extends 'core/base.html' %}
 
-<p>Welcome to the modern cooking website for citizens of the 21st century!</p>
+{% block content %}
 
-<p>There are currently {{ users }} users registered on this platform. <a href="{% url 'core:register' %}">Join now</a>!</p>
+  <div class="jumbotron">
+    <h1>Welcome to cookbook</h1>
+    <p>A modern cooking website for citizens of the 21st century. There are currently {{ users }} users registered on this platform.</p>
+    <p>Sound good? Great! <a class="btn btn-primary btn-lg" href="{% url 'core:register' %}">Join today</a></p>
 
-<p>Already registered? <a href="{% url 'core:login' %}">Sign in</a></p>
+    <p>Already a member? <a class="btn btn-primary btn-lg" href="{% url 'core:login' %}">Login</a></p>
+  </div>
 
-<h2>Popular meal types</h2>
-<ul>
-{% for col in collections %}
-	<li><a href="{% url 'core:collection' col.id %}">{{ col.name }}</a></li>
-{% endfor %}
-</ul>
+  <h2>Popular meal types</h2>
+  <ul>
+  {% for col in collections %}
+    <li><a href="{% url 'core:collection' col.id %}">{{ col.name }}</a> (?)</li>
+  {% endfor %}
+  </ul>
+
+
+{% endblock %}
