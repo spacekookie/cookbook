@@ -14,6 +14,11 @@ urlpatterns = [
   url(r'^login/$', views.login, name='login'),
   url(r'^logout/$', views.logout, name='logout'),
 
-  url(r'^profile/(?P<id>[0-9]+)/$', views.profile, name='profile'),
-  url(r'^profile/(?P<id>[0-9]+)/edit/$', views.profile_edit, name='profile_edit'),
+  url(r'^user/(?P<id>[0-9]+)/$', views.profile, name='profile'),
+  url(r'^user/(?P<id>[0-9]+)/edit/$', views.profile_edit, name='profile_edit'),
+
+  # List views
+  url(r'^users/$', views.list_view_users, name='list_users'),
+  url(r'^dishes/$', views.list_view_dishes, name='list_dishes'),
+  url(r'^ingredients/$', views.list_view_ingredients, name='list_ingredients'),
 ]

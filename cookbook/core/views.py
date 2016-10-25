@@ -168,6 +168,7 @@ def login(request):
         return render(request, template, 
           { 
             'logged_in': request.user.is_authenticated(),
+            'error_message': 'Authentication failed! User/ PW combination not known',
             'current_user': current_user,
             'form': LoginForm()
           })
@@ -226,3 +227,43 @@ def logout(request):
   if current_user.username is not None:
     django_logout(request)
     return redirect(reverse('core:index'))
+
+
+def list_view_users(request):
+  current_user = request.user
+  users = Cook.objects.all()
+
+  print("Getting all users registered")
+  
+  return render(request, 'core/lists/users.html', 
+    { 
+      'logged_in': request.user.is_authenticated(),
+      'current_user': current_user,
+      'users': users,
+      'number_users': len(users)
+   })
+
+
+def list_view_ingredients(request):
+  current_user = request.user
+  ingr = Ingredient.objects.all()
+  
+  return render(request, 'core/lists/ingredients.html', 
+    { 
+      'logged_in': request.user.is_authenticated(),
+      'current_user': current_user,
+      'user': user,
+      'recipies': recipies
+   })
+
+
+def list_view_dishes(request):
+  meals = Meal.objects.all()
+  
+  return render(request, 'core/lists/meals.html', 
+    { 
+      'logged_in': request.user.is_authenticated(),
+      'current_user': current_user,
+      'user': user,
+      'recipies': recipies
+   })

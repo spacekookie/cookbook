@@ -12,6 +12,7 @@
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-custom.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/cookbook.css' %}">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -30,16 +31,42 @@
         <a class="navbar-brand" href="{% url 'core:index' %}"> Cookbook</a>
         </div>
 
-        <ul class="nav navbar-nav">
-          <li><a class="navbar-custom" href="">Collections</a></li>
-          <li><a class="navbar-custom" href="">Ingredients</a></li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-          <li>{% if logged_in %} <a class="navbar-custom" href="{% url 'core:profile' current_user.id %}">{{ current_user.username }}</a>
-          {% else %}        <a class="navbar-custom" href="{% url 'core:login' %}">Login</a>{% endif %}
-          </li>
+        <div class="navbar-form navbar-left col-md-12" role="search">
+          <div class="form-group">
+            <div class="input-group">
+              <input class="form-control" placeholder="Search for dishes or users" type="text">
+              <span class="input-group-addon btn"><span class="glyphicon glyphicon-search"</span></span>
+            </div>
+          </div>
+        </div>
 
-          {% if logged_in %} <li><a class="navbar-custom" href="{% url 'core:logout' %}">Logout</a></li>{% endif %}
+        <ul class="nav navbar-nav">
+          <li><a class="navbar-custom" href="">Dishes</a></li>
+          <li><a class="navbar-custom" href="">Ingredients</a></li>
+          <li><a class="navbar-custom" href="{% url 'core:list_users' %}">Users</a></li>
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+          {% if logged_in %}
+
+            <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><small><span class="glyphicon glyphicon glyphicon-user"/></small> {{ current_user.username }} <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+
+              <li><a href="{% url 'core:profile' current_user.id %}"><small><span class="glyphicon glyphicon-log-out"/></small> Profile</a></li>
+              <li><a href="#"><small><span class="glyphicon glyphicon-envelope"/></small> Inbox</a></li>
+              <li><a href="#"><small><span class="glyphicon glyphicon-log-out"/></small> Friends</a></li>
+              <li class="divider"></li>
+              <li><a href="#"><small><span class="glyphicon glyphicon-log-out"/></small> Settings</a></li>
+              <li class="divider"></li>
+              <li><a href="{% url 'core:logout' %}"><small><span class="glyphicon glyphicon-log-out"/></small> Logout</a></li>
+            </ul>
+            </li>
+
+          {% else %}
+            <li><a class="navbar-custom" href="{% url 'core:login' %}"><small><span class="glyphicon glyphicon-log-in"/></small> Login</a></li>
+          {% endif %}
+
         </ul>
       </div>
     </nav>

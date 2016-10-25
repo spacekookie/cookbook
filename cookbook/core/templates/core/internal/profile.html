@@ -1,18 +1,17 @@
 {% extends 'core/base.html' %}
 {% load staticfiles %}
 
-
 {% block content %}
 
 <ul class="breadcrumb">
-  <li><a href="#">Home</a></li>
-  <li><a href="#">Library</a></li>
-  <li class="active">Data</li>
+  <li class="active">Home</li>
+  <li class="active">Users</li>
+  <li class="active">{{ user.username }}</li>
 </ul>
 
 {% if user.id == current_user.id %}
 <div class="alert alert-info">
-  You seem to be logged in as <strong>{{ user.username }}</strong>. You can edit this profile <span style="display:inline-block; width: 10px;"></span> <a class="btn btn-primary btn-xs" href="{% url 'core:profile_edit' current_user.id %}">Edit profile</a>
+  You seem to be logged in as <strong>{{ user.username }}</strong>. You can edit this profile <span style="display:inline-block; width: 10px;"></span> <a class="btn btn-default btn-sm" href="{% url 'core:profile_edit' current_user.id %}"><small><span class="glyphicon glyphicon-pencil"/></small> Edit profile</a>
 </div>
 {% endif %}
 
@@ -34,8 +33,17 @@
 
           <h1>{{ user.username }}</h1>
 
-          <table class="table table-striped">
+          {% if logged_in %}
+          {% if user.id != current_user.id %}
+            <a href="#" data-toggle="tooltip" title="Add this user as a friend" class="btn btn-success"><span class="glyphicon glyphicon-plus"/></a><a href="#" data-toggle="tooltip" title="Send a message to this user" class="btn btn-primary"><span class="glyphicon glyphicon-envelope"/></a><a href="#" data-toggle="tooltip" title="Block this user from contacting you" class="btn btn-danger"><span class="glyphicon glyphicon-remove"/></a>
+          {% endif %}
+          {% endif %}
+
+          <table class="table table-striped"  align="left">
             <tbody>
+              <col width="15%">
+              <col width="85%">
+
               {% if user.first_name or user.last_name %}
               <tr>
                 <td><b>Real Name</b></td>
@@ -66,9 +74,13 @@
           </table>
 
           <h3>Recipes by this user</h3>
-          <ul>
+          <ul class="list-group">
           {% for r in recipies %}
-            <li><a href="{% url 'core:recipe' r.id %}">{{ r.dish }} - {{ r.name }}</a></li>
+            <li class="list-group-item">
+              <span class="badge" data-toggle="tooltip" title="Percentage rating of this recipe for it's dish">3%</span>
+
+              <a href="#">{{ r.dish.collection }}</a> <strong>></strong> <a href="#">{{ r.dish }}</a> <strong>></strong> <strong><a href="{% url 'core:recipe' r.id %}">{{ r.name }}</a></strong>
+            </li>
           {% endfor %}
           </ul>
 

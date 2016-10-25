@@ -1,0 +1,60 @@
+{% extends 'core/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+
+<ul class="breadcrumb">
+  <li class="active">Home</li>
+  <li class="active">Users</li>
+</ul>
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <h2>Currently {{ number_users }} Users registered {% if not logged_in %}. Join them <a href="{% url 'core:register' %}">today</a> {% endif %}</h2>
+    <ul class="list-group">
+
+    {% for u in users %}
+      <li class="list-group-item table-striped">
+        <div class="row">
+          <div class="col-md-2">
+
+            <div class="well">
+              {% if u.avatar.img %}
+              <img class="img-responsive" src="{% static u.avatar.img %}" />
+              {% else %}
+              <img class="img-responsive" src="{% static 'img/default_user_female.png' %}" />
+              {% endif %}
+            </div> <!-- well -->
+          </div> <!-- Avatar column -->
+
+          <div class="col-md-8">
+            <h3>{% if u.user.id == current_user.id %}(You) {% endif %}
+            <a href="{% url 'core:profile' u.user.id %}"><strong>{{ u.user.username }}</strong> {% if u.user.first_name or u.user.last_name %} ({{ u.user.first_name }} {{ u.user.last_name }}) {% endif %}
+            </a></h3>
+
+            <p><strong>Date joinjed</strong>: {{ u.user.date_joined }}</p>
+            <p><strong>Last login</strong>: {{ u.user.last_login }}</p>
+            <p><strong>Recipes published</strong>: 1</p>
+          </div>
+
+          <div class="col-md-2">
+            {% if logged_in %}
+              {% if u.user.id != current_user.id %}
+              <div class="btn-group-vertical pull-right pull-center vcenter" align="right">
+                <a href="#" data-toggle="tooltip" title="Add this user as a friend" class="btn btn-success"><span class="glyphicon glyphicon-plus"/></a>
+                <a href="#" data-toggle="tooltip" title="Send a message to this user" class="btn btn-primary"><span class="glyphicon glyphicon-envelope"/></a>
+                <a href="#" data-toggle="tooltip" title="Block this user from contacting you" class="btn btn-danger"><span class="glyphicon glyphicon-remove"/></a>
+              </div>
+              {% endif %}
+            {% endif %}
+          </div>
+        </div>
+       
+      </li>
+      {% endfor %}
+    </ul>
+
+  </div> <!-- Panel body -->
+</div> <!-- Panel -->
+
+{% endblock %}

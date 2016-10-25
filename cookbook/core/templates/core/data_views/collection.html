@@ -2,6 +2,12 @@
 
 {% block content %}
 
+<ul class="breadcrumb">
+  <li class="active">Home</li>
+  <li class="active">Dishes</li>
+  <li class="active">{{ collection.name }}</li>
+</ul>
+
   <h1>{{ collection.name }}</h1>
 
   <p> {{ collection.description }} </p>
