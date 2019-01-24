@@ -1,22 +1,20 @@
 # Cookbook
 
-A modern cooking platform for the 21st century. Well-defined recipe hirarchies and structures, machine-parsible instructions and searchable ingredient tags.
+- Well-defined recipes as lists of instructions
+  - Instructions are done either on an ingredient or a set of incredients.
+  - Ingredients are tags
+  - Instructions are tags
+  - Measurements are tagged with units
+  - An instruction can include sub-actions
+    - i.e. "do florp" can be: first do "flop" and then do "lorp"
+    - In this case both "flop" and "lorp" need to be defined actions on the set of incredients
+- Recipes are searchable by tags
+  - "What can I cook with the things I have at home?"
+  - "What can I cook with the things I like?"
+  - "What can I cook with things, whose name starts with a Q?"
+  - "I have `X` at home, what can I cook?"
+- Recipes can also be automatically tagged
+  - "Contains only vegan ingredients"
+  - "Takes N minutes to make", with that time based on the number of instructions and their tagged time.
 
-The current website is in a very early development state. It probably contains a lot of bugs and is missing a lot of features. Currently it is possible to test the website with the included database.
-
-You need django installed to run this website. In case you do, simple run
-
-```console
-$> python manage.py runserver
-```
-
-Following is a rough structure of how cookbook organises recipies.
-
-![Cookbook Structure](extra/cookbook_structure.png)
-
-
-## Some screenshots from an early state website
-
-![Cookbook User List](extra/user_list.png)
-
-![Cookbook ](extra/recipe_render.png)
+... many more things that I can't be bothered to write down right now :)
